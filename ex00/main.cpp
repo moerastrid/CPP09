@@ -6,13 +6,14 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:38 by ageels        #+#    #+#                 */
-/*   Updated: 2023/09/25 17:56:30 by ageels        ########   odam.nl         */
+/*   Updated: 2023/11/08 13:22:38 by astrid        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <fstream>
-#include <string>
+
+#include "BitcoinExchange.hpp"
 
 void	errormessage(std::string str) {
 	std::cout << "\x1B[31m" << str << "\x1B[0m" << std::endl;	
@@ -20,13 +21,17 @@ void	errormessage(std::string str) {
 
 int main(int argc, char **argv) {
 	if (argc != 2) {
-		errormessage("Error: argument count");
+		errormessage("USAGE: ./btc [inputfile]");
 		return (-1);
 	}
+	
+	BitcoinExchange btc;
+	
 	std::fstream	inFile;
 	inFile.open(argv[1], std::fstream::in);
 	if (!inFile.is_open())
 		errormessage("Error: could not open file");
 	std::cout << inFile.rdbuf() << std::endl;
 	inFile.close();
+	
 }

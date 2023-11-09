@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2023/09/25 18:01:55 by ageels        ########   odam.nl         */
+/*   Updated: 2023/11/08 13:07:30 by astrid        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 class BitcoinExchange {
 	private :
 		void		message(const std::string str);
-		std::map,	dataMap;
+		// std::map,	dataMap;
 
 	public :
 		BitcoinExchange();											// default constructor
