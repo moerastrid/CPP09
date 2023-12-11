@@ -6,15 +6,15 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:30 by ageels        #+#    #+#                 */
-/*   Updated: 2023/10/04 15:02:42 by ageels        ########   odam.nl         */
+/*   Updated: 2023/12/11 14:37:34 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-void	BitcoinExchange::message(const std::string str){
+void	BitcoinExchange::message(const std::string str) {
 	std::cout << "\x1B[35m BitcoinExchange - " << str << "\x1B[0m" << std::endl;	
-};
+}
 
 BitcoinExchange::BitcoinExchange() {
 	message("default constructor");

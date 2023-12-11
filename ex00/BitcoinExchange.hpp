@@ -6,18 +6,20 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2023/10/04 15:01:19 by ageels        ########   odam.nl         */
+/*   Updated: 2023/12/11 14:41:01 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
 #include <map>
+#include <string>
 
 class BitcoinExchange {
 	private :
-		void		message(const std::string str); 
 		std::map<std::string, int>	dataMap;
+
+		void		message(const std::string str);
 
 	public :
 		BitcoinExchange();											// default constructor
