@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:38 by ageels        #+#    #+#                 */
-/*   Updated: 2023/12/11 18:07:01 by ageels        ########   odam.nl         */
+/*   Updated: 2023/12/11 18:34:23 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,25 @@ int main(int argc, char **argv) {
 		return (-1);
 	}
 	
+	BitcoinExchange btc;
 	std::fstream	inFile;
 
 	inFile.open(argv[1], std::fstream::in);
 	if (!inFile.is_open())
 		errormessage("Error: could not open input file");
-	std::cout << inFile.rdbuf() << std::endl;
-	inFile.close();
+	//std::cout << inFile.rdbuf() << std::endl;
+	for (std::string line; std::getline(inFile, line);) {
+		if (line == "date | value")
+			continue ;
+		std::cout << " | " << line << " | " << std::endl;
+		try {
+			btc.exchange(line);
+		} catch (const BitcoinExchange::BitcoinExchangeException &ex) {
+			std::cerr << "\x1B[31m" << ex.what() << "\x1B[0m" << std::endl;
+		}
+	}
 	
-	BitcoinExchange btc;
+	inFile.close();
 	
 	
 }

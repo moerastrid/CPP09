@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2023/12/11 14:41:01 by ageels        ########   odam.nl         */
+/*   Updated: 2023/12/11 18:28:01 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ class BitcoinExchange {
 		~BitcoinExchange();											// default destructor
 		BitcoinExchange(const BitcoinExchange &src);				// copy constructor
 		BitcoinExchange	&operator=(const BitcoinExchange &src);		// assignment operator
+
+		std::string	exchange(std::string input);
+
+		class BitcoinExchangeException : public std::logic_error {
+		public:
+			BitcoinExchangeException(const std::string& message) : std::logic_error(message) {}
+		};
 };
 
 std::ostream	&operator<<(std::ostream &o, BitcoinExchange &src);
