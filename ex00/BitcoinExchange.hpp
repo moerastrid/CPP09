@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2023/09/25 18:01:55 by ageels        ########   odam.nl         */
+/*   Updated: 2023/10/04 15:01:19 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 class BitcoinExchange {
 	private :
-		void		message(const std::string str);
-		std::map,	dataMap;
+		void		message(const std::string str); 
+		std::map<std::string, int>	dataMap;
 
 	public :
 		BitcoinExchange();											// default constructor
@@ -26,4 +26,4 @@ class BitcoinExchange {
 		BitcoinExchange	&operator=(const BitcoinExchange &src);		// assignment operator
 };
 
-std::ostream	&operator<<(std::ostream &o, BitcoinExchange &src);		
+std::ostream	&operator<<(std::ostream &o, BitcoinExchange &src);
