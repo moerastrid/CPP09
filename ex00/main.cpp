@@ -6,10 +6,11 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:38 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/02 14:43:45 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/02 17:42:24 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <iomanip>		// for precision of output float : std::setprecision(7)
 #include <iostream>
 #include <fstream>
 #include "BitcoinExchange.hpp"
@@ -36,10 +37,14 @@ int main(int argc, char **argv) {
 	}
 	
 	//std::cout << inFile.rdbuf() << std::endl;
-	for (std::string line; std::getline(inFile, line);) {
-		if (line == "date | value")
+	for (std::string line; std::getline(inFile, line); !line.empty()) {
+		if (line == "date | value") {
 			continue ;
-		std::cout << "[" << line << "]" << std::endl;
+		} else if (line == " ") {
+			std::cout << "\n";
+			continue ;
+		}
+		//std::cout << "[" << line << "]" << std::endl;
 		try {
 			btc.exchange(line);
 		} catch (const BitcoinExchange::BitcoinExchangeException &ex) {

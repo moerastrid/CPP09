@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/02 14:41:17 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/02 17:16:36 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <iomanip>
 
 
 class BitcoinExchange {
 	private :
-		std::map<std::string, int>	dataMap;
+		std::map<std::string, float>	dataMap;
 
 		void						message(const std::string str);
 
@@ -32,6 +33,8 @@ class BitcoinExchange {
 		bool		setDB();
 		std::string	exchange(std::string input);
 		void		verifyInput(std::string input);
+		std::string	verifyDate(std::string date);
+		float		verifyValue(std::string input);
 			
 		class BitcoinExchangeException : public std::logic_error {
 		public:
