@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:30 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/02 17:40:15 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/02 17:57:43 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ bool	BitcoinExchange::setDB() {
 }
 
 void	BitcoinExchange::verifyInput(std::string input) {
-	if (input.find('|') == std::string::npos)
+	if (input.find_first_of('|') != 11)
 		throw (BitcoinExchangeException("Error: bad input => " + input));
 }
 
@@ -83,7 +83,7 @@ std::string	BitcoinExchange::verifyDate(std::string date) {
 	int day = stoi(date.substr(8, 2));
 
 	if ((year < 2009 || year > 2024) || (month < 0 || month > 12) || (day < 0 || day > 31))
-		throw (BitcoinExchangeException("Error: invalid date, please use a valid yyyy-mm-dd"));
+		throw (BitcoinExchangeException("Error: invalid date"));
 	return(date);
 }
 
@@ -92,7 +92,7 @@ float	BitcoinExchange::verifyValue(std::string input) {
 
 	if (value < 0)
 		throw (BitcoinExchangeException("Error: not a positive number."));
-	else if (value > INT8_MAX)
+	else if (value > 1000)
 		throw (BitcoinExchangeException("Error: too large a number."));
 	return(value);
 }
@@ -110,7 +110,7 @@ std::string	BitcoinExchange::exchange(std::string input) {
 	
 	float result = value * itd->second;
 	
-	std::cout << "\x1B[36m" << date << " => " << value << " = " << result << "\x1B[0m" << "\n";
+	std::cout << "\x1B[36m" << date << " => " << value << " = " << std::setprecision(4) << result << "\x1B[0m" << "\n";
 	// find matching value in csv file & return it
 	return ("1");
 }
