@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:30 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/02 17:57:43 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/03 13:33:50 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ void	BitcoinExchange::message(const std::string str) {
 // PUBLIC (OC FORM)
 
 BitcoinExchange::BitcoinExchange() {
-	message("default constructor");
+	//message("default constructor");
 }
 
 BitcoinExchange::~BitcoinExchange() {
-	message("default destructor");
+	//message("default destructor");
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) {
-	message("copy constructor");
+	//message("copy constructor");
 	*this = src;
 }
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &src) {
-	message("assignment operator");
+	//message("assignment operator");
 	this->dataMap = src.dataMap;
 	return(*this);
 }
@@ -113,10 +113,4 @@ std::string	BitcoinExchange::exchange(std::string input) {
 	std::cout << "\x1B[36m" << date << " => " << value << " = " << std::setprecision(4) << result << "\x1B[0m" << "\n";
 	// find matching value in csv file & return it
 	return ("1");
-}
-
-std::ostream 	&operator<<(std::ostream &o, BitcoinExchange &src) {
-	o << "hey";
-	(void)src;
-	return (o);
 }

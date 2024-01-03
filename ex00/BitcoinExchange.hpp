@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/02 17:16:36 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/03 13:33:44 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,3 @@ class BitcoinExchange {
 			BitcoinExchangeException(const std::string& message) : std::logic_error(message) {}
 		};
 };
-
-std::ostream	&operator<<(std::ostream &o, BitcoinExchange &src);
