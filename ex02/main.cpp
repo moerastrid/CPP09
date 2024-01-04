@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:34 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 21:38:54 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 21:52:16 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,34 @@ static bool	isnumber(string str) {
 	return (true);
 }
 
-static bool	parse(int argc, char **argv, vector<int> *vc, deque<int> *dc) {
-	if (argc == 1) {
-		cerr << "Please enter an int sequence to sort\n";
+static bool	parse(int argc, char **argv, vector<uint> *vc, deque<uint> *dc) {
+	if (argc == 1)
 		return (false);
-	}
+
 	for (int i = 1; argv[i]; i++) {
-		if (isnumber(argv[i]) == false) {
-			cerr << "Please enter an int sequence to sort\n";
+		if (isnumber(argv[i]) == false)
 			return(false);
-		} else {
-			vc->push_back(std::stoi(argv[i]));
-			dc->push_back(std::stoi(argv[i]));
+		try {
+			if (std::stol(argv[i]) > UINT_MAX)
+				return (false);
+			vc->push_back(std::stol(argv[i]));
+			dc->push_back(std::stol(argv[i]));
+		} catch (std::out_of_range &ex) {
+			return (false);
 		}
 	}
-
 	return (true);
 }
 
-
 int main(int argc, char **argv) {
 	PmergeMe	PMergeSorter;
-	vector<int>	vector_container;
-	deque<int>	deque_container;
+	vector<uint>	vector_container;
+	deque<uint>	deque_container;
 
-	if (!parse(argc, argv, &vector_container, &deque_container))
+	if (!parse(argc, argv, &vector_container, &deque_container)) {
+		cerr << "Please enter an int sequence to sort\n";
 		return (-1);
+	}
 	
 	// process vector
 	cout << "\nvector before: " << vector_container << "\n";

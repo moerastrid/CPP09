@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:41 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 21:23:36 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 21:51:05 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 	using std::vector;
 #include <deque>
 	using std::deque;
+#include <climits>
 
 class PmergeMe {
 	private :
@@ -33,8 +34,8 @@ class PmergeMe {
 		PmergeMe(const PmergeMe &src);
 		PmergeMe &operator=(const PmergeMe &src);
 
-		void	sort(vector<int> *vector_container);
-		void	sort(deque<int> *deque_container);
+		void	sort(vector<uint> *vector_container);
+		void	sort(deque<uint> *deque_container);
 
 		class PmergeMeException : public logic_error {
 			public :
@@ -42,5 +43,5 @@ class PmergeMe {
 		};
 };
 
-ostream	&operator<<(ostream &o, vector<int> &src);
-ostream	&operator<<(ostream &o, deque<int> &src);
+ostream	&operator<<(ostream &o, vector<uint> &src);
+ostream	&operator<<(ostream &o, deque<uint> &src);
