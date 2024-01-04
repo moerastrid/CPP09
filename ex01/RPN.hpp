@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 13:09:21 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 16:28:02 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 16:34:39 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ class RPN {
 	private :
 		stack<int>	storage;
 
-		void	message(const std::string str);
-		void	message(char ch, const std::string str);
 		void	operation(char ch);
 		void	digit(char ch);
 

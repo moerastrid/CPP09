@@ -6,11 +6,23 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 13:09:30 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 16:23:48 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 16:36:02 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
+
+//LOCAL
+static void	debugmessage(const string str) {
+	//cout << "\x1B[34mRPN - " << str << "\x1B[0m\n";
+	(void)str;
+}
+
+static void	debugmessage(char ch, const string str) {
+	//cout << "\x1B[34mRPN - " << ch << str << "\x1B[0m\n";	
+	(void)ch;
+	(void)str;
+}
 
 // public ~ OCform
 RPN::RPN() {
@@ -28,16 +40,6 @@ RPN &RPN::operator=(const RPN &src) {
 }
 
 // PRIVATE custom
-void	RPN::message(const std::string str) {
-	//cout << "\x1B[34mRPN - " << str << "\x1B[0m\n";
-	(void)str;
-}
-
-void	RPN::message(char ch, const std::string str) {
-	//cout << "\x1B[34mRPN - " << ch << str << "\x1B[0m\n";	
-	(void)ch;
-	(void)str;
-}
 
 void	RPN::operation(char ch) {
 	int n1;
@@ -91,18 +93,18 @@ void	RPN::reset(void) {
 // PUBLIC custom
 
 void	RPN::calculate(string input) {
-	message("Analyzing ... " + input + " ...");
+	debugmessage("Analyzing ... " + input + " ...");
 	
 	for(string::iterator it = input.begin(); it != input.end(); it++) {
 		switch (*it) {
 			case ' ' : case '\t' : case '\r' : case '\n' : case '\f' : case '\v' :
 				break ;
 			case '0' ... '9' :
-				message(*it, " is digit");
+				debugmessage(*it, " is digit");
 				digit(*it);
 				break ;			// operations
 			case '-': case '+' : case '*' : case '/' :
-				message(*it, "is operation");
+				debugmessage(*it, "is operation");
 				operation(*it);
 				break;
 			default :
@@ -110,7 +112,7 @@ void	RPN::calculate(string input) {
 		}
 	}
 	
-	message("Calculating ..." + input + "...");
+	debugmessage("Calculating ..." + input + "...");
 }
 
 
@@ -119,7 +121,7 @@ void	RPN::calculate(string input) {
 ostream 	&operator<<(ostream &o, RPN &src) {
 	stack<int>tempstack = src.getStorage();
 	if (tempstack.empty()) {
-		o << "nothing in store";
+		debugmessage("nothing in store");
 		return(o);
 	}
 	while(!tempstack.empty()) {
