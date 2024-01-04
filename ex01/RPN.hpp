@@ -6,9 +6,11 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 13:09:21 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 13:15:29 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 16:28:02 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+// RPN stands for reversed polish notation, aka postfix notation.
 
 #pragma once
 #include <stack>
@@ -19,10 +21,14 @@
 #include <string>
 	using std::string;
 
-// RPN stands for reversed polish notation, aka postfix notation.
 class RPN {
 	private :
 		stack<int>	storage;
+
+		void	message(const std::string str);
+		void	message(char ch, const std::string str);
+		void	operation(char ch);
+		void	digit(char ch);
 
 	public :
 		RPN();							//default constructor

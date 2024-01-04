@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 13:09:30 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 13:33:59 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 16:23:48 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,51 @@ RPN &RPN::operator=(const RPN &src) {
 }
 
 // PRIVATE custom
+void	RPN::message(const std::string str) {
+	//cout << "\x1B[34mRPN - " << str << "\x1B[0m\n";
+	(void)str;
+}
 
+void	RPN::message(char ch, const std::string str) {
+	//cout << "\x1B[34mRPN - " << ch << str << "\x1B[0m\n";	
+	(void)ch;
+	(void)str;
+}
 
+void	RPN::operation(char ch) {
+	int n1;
+	int n2;
+
+	if (storage.size() < 2) {
+		throw (RPNException("Error: operation not possible"));
+	}
+	n1 = storage.top();
+	storage.pop();
+	n2 = storage.top();
+	storage.pop();
+
+	switch (ch) {
+		case '+' :
+			storage.push(n2 + n1);
+			break;
+		case '-' :
+			storage.push(n2 - n1);
+			break;
+		case '*' :
+			storage.push(n2 * n1);
+			break;
+		case '/' :
+			storage.push(n2 / n1);
+			break;
+		default :
+			throw (RPNException("impossible error?!"));
+	}
+}
+
+void	RPN::digit(char ch) {
+	int n = ch - '0';
+	storage.push(n);
+}
 
 
 // PUBLIC get/set
@@ -48,30 +91,26 @@ void	RPN::reset(void) {
 // PUBLIC custom
 
 void	RPN::calculate(string input) {
-	cout << "Analyzing ..." << input << "...\n";
+	message("Analyzing ... " + input + " ...");
 	
 	for(string::iterator it = input.begin(); it != input.end(); it++) {
 		switch (*it) {
-			// white space characters
 			case ' ' : case '\t' : case '\r' : case '\n' : case '\f' : case '\v' :
 				break ;
-			// digits
 			case '0' ... '9' :
-				cout << *it << " is number\n";
-				break ;
-			// operations
+				message(*it, " is digit");
+				digit(*it);
+				break ;			// operations
 			case '-': case '+' : case '*' : case '/' :
-				cout << *it << " is operation\n";
+				message(*it, "is operation");
+				operation(*it);
 				break;
-			// anything else (error)
 			default :
 				throw (RPNException("invalid input"));
 		}
 	}
 	
-	
-	cout << "Calculating ..." << input << "...\n";
-	this->storage.push(6);
+	message("Calculating ..." + input + "...");
 }
 
 
