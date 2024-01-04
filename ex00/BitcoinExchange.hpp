@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:35 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/03 13:33:44 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 13:08:15 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class BitcoinExchange {
 		float		verifyValue(std::string input);
 			
 		class BitcoinExchangeException : public std::logic_error {
-		public:
-			BitcoinExchangeException(const std::string& message) : std::logic_error(message) {}
+			public:
+				BitcoinExchangeException(const std::string& message) : std::logic_error(message) {}
 		};
 };
