@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:34 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 21:37:14 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/04 21:38:54 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int main(int argc, char **argv) {
 	if (!parse(argc, argv, &vector_container, &deque_container))
 		return (-1);
 	
+	// process vector
 	cout << "\nvector before: " << vector_container << "\n";
 	auto vc_start = std::chrono::high_resolution_clock::now();
 	try {
@@ -72,6 +73,7 @@ int main(int argc, char **argv) {
 	cout << "vector after: " << vector_container << "\n";
 	cout << "vector duration: " << vc_duration.count() << " nanoseconds\n";
 
+	// process deque
 	cout << "\ndeque before: " << deque_container << "\n";
 	auto dc_start = std::chrono::high_resolution_clock::now();
 	try {
@@ -83,22 +85,5 @@ int main(int argc, char **argv) {
 	auto dc_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(dc_stop - dc_start);
 	cout << "deque after: " << deque_container << "\n";
 	cout << "deque duration: " << dc_duration.count() << " nanoseconds\n";
-
-
-	// try {
-	// 	auto vc_start = std::chrono::high_resolution_clock::now();
-	// 	PMergeSorter.sort(&vector_container);
-	// 	auto vc_stop = std::chrono::high_resolution_clock::now();
-	// 	auto dc_start = std::chrono::high_resolution_clock::now();
-	// 	PMergeSorter.sort(&deque_container);
-	// 	auto dc_stop = std::chrono::high_resolution_clock::now();
-	// 	auto vc_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(vc_stop - vc_start);
-	// 	auto dc_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(dc_stop - dc_start);
-	// 	cout << "vector duration: " << vc_duration.count() << " nanoseconds\n";
-	// 	cout << "deque duration: " << dc_duration.count() << " nanoseconds\n";
-	// } catch (const PmergeMe::PmergeMeException &ex) {
-	// 	cerr << "\x1B[31m" << ex.what() << "\x1B[0m" << std::endl;		
-	// 
-	
 	return (1);
 }
