@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:34 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 21:52:16 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/06 19:37:02 by astrid        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ static bool	parse(int argc, char **argv, vector<uint> *vc, deque<uint> *dc) {
 }
 
 int main(int argc, char **argv) {
-	PmergeMe	PMergeSorter;
+	PmergeMe		PMergeSorter;
 	vector<uint>	vector_container;
-	deque<uint>	deque_container;
+	deque<uint>		deque_container;
 
+	// WRONG PLACE : subject says
+	// Of course you have to indicate the time used to perform all your operations, both the sorting part and the data management part.
 	if (!parse(argc, argv, &vector_container, &deque_container)) {
 		cerr << "Please enter an int sequence to sort\n";
 		return (-1);

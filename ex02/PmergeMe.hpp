@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:41 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 21:51:05 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/06 19:35:42 by astrid        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 class PmergeMe {
 	private :
+		unsigned int	n_elem;
 
 	public :
 		PmergeMe();
