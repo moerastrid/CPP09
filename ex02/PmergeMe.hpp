@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:41 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/06 19:35:42 by astrid        ########   odam.nl         */
+/*   Updated: 2024/01/08 19:26:17 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,24 @@
 	using std::vector;
 #include <deque>
 	using std::deque;
+#include <array>
+#include <chrono>
+#include <algorithm>
 #include <climits>
+
+bool	isnumber(string str);
 
 class PmergeMe {
 	private :
-		unsigned int	n_elem;
+		unsigned int				n = 0;
+		vector<uint>				sequence;
+		std::chrono::nanoseconds	vc_time;
+		std::chrono::nanoseconds	dc_time;
+
+		bool	parse(int argc, char **argv);
+		void	run_vc();
+		void	run_dc();
+
 
 	public :
 		PmergeMe();
@@ -35,8 +48,14 @@ class PmergeMe {
 		PmergeMe(const PmergeMe &src);
 		PmergeMe &operator=(const PmergeMe &src);
 
-		void	sort(vector<uint> *vector_container);
-		void	sort(deque<uint> *deque_container);
+		unsigned int				get_n();
+		std::chrono::nanoseconds	get_vc_time();
+		std::chrono::nanoseconds	get_dc_time();
+		vector<uint>				get_sequence();
+
+		void	run(int argc, char **argv);
+		void	sort(vector<uint> *vc);
+		void	sort(deque<uint> *dc);
 
 		class PmergeMeException : public logic_error {
 			public :
@@ -44,5 +63,6 @@ class PmergeMe {
 		};
 };
 
-ostream	&operator<<(ostream &o, vector<uint> &src);
+ostream	&operator<<(ostream &o, const vector<uint> &src);
 ostream	&operator<<(ostream &o, deque<uint> &src);
+ostream	&operator<<(ostream &o, PmergeMe &src);
