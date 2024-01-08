@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:38 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/08 19:38:44 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/08 21:08:09 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ void	PmergeMe::run_vc() {
 	auto start = std::chrono::high_resolution_clock::now();
 
 	// data management part
-	vector<uint>	vc(this->n);
+	vector<uint>	vc;
+
+	vc.reserve(this->n);
 	for(unsigned int i = 0; i < n; i++) {
-		vc.push_back(sequence[n]);
+		vc.push_back(sequence[i]);
 	}
 
 	// sorting part
@@ -66,7 +68,7 @@ void	PmergeMe::run_dc() {
 	auto start = std::chrono::high_resolution_clock::now();
 
 	// data management part
-	deque<uint>	dc(this->n);
+	deque<uint>	dc;
 	for(unsigned int i = 0; i < n; i++) {
 		dc.push_back(sequence[n]);
 	}
@@ -120,7 +122,6 @@ vector<uint>	PmergeMe::get_sequence() {
 
 
 // PUBLIC custom
-#include <algorithm>
 void	PmergeMe::run(int argc, char **argv) {
 	if (!parse(argc, argv))
 		throw(PmergeMeException("ERROR: PARSE : Please enter a positive int sequence to sort"));
@@ -128,12 +129,54 @@ void	PmergeMe::run(int argc, char **argv) {
 	run_dc();
 }
 
-void	PmergeMe::sort(vector<uint> *vector_container) {
-	std::sort(vector_container->begin(), vector_container->end());
+void	PmergeMe::sort(vector<uint> *vc) {
+	bool						uneven = false;
+	unsigned int				last = 0;
+
+	cout << "incoming: " << *vc << "\n";
+
+	if (n % 2 != 0) {
+		uneven = true;
+		last = vc->at(n - 1);
+		vc->pop_back();
+		cout << "modified: " << *vc << "\n";
+	}
+	
+	if (uneven == true) {
+		cout << "BEWARE - uneven ! " << last << "\n";
+	}
+	
+	vector<std::vector<uint>::iterator>	vc_pairs;
+	vc_pairs.reserve(vc->size() / 2);
+	
+	auto	it = vc->begin();
+	unsigned int	i = 0;
+	while(i != this->n) {
+		if (i % 2 == 0)
+			vc_pairs.push_back(it);
+		i++;
+		it++;
+	}
+
+	for (auto iter = vc_pairs.begin(); iter != vc_pairs.end(); iter++) {
+		cout << "value 1 : " << **iter << "\n";
+		cout << "value 2 : " <<*(*iter + 1) << "\n";
+		if (**iter > (*(*iter + 1))) {
+			unsigned int temp = *(*iter + 1);
+			*(*iter + 1) = **iter;
+			**iter = temp;
+		}
+		cout << "value 3 : " << **iter << "\n";
+		cout << "value 4 : " << *(*iter + 1) << "\n\n";
+	}
+	if (uneven == true) {
+		vc->push_back(last);
+	}
+	cout << "modified: " << *vc << "\n";
 }
 
-void	PmergeMe::sort(deque<uint> *deque_container) {
-	std::sort(deque_container->begin(), deque_container->end());
+void	PmergeMe::sort(deque<uint> *dc) {
+	std::sort(dc->begin(), dc->end());
 }
 
 
