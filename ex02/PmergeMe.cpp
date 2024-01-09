@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:38 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/08 21:08:09 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/09 14:03:14 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ void	PmergeMe::run_vc() {
 		vc.push_back(sequence[i]);
 	}
 
-	// sorting part
+	// sorting part << "\x1B[34mRPN - " << str << "\x1B[0m\n";
+	cout << "\x1B[34mVC bc :" << vc << "\x1B[0m\n";
 	PmergeMe::sort(&vc);
+	cout << "\x1B[34mVC ad :" << vc << "\x1B[0m\n";
 
 	// more data management
 	vc.clear();
@@ -129,6 +131,14 @@ void	PmergeMe::run(int argc, char **argv) {
 	run_dc();
 }
 
+void	sort_pair(std::vector<uint>::iterator it) {
+	if (*it > (*(it + 1))) {
+		unsigned int temp = *(it + 1);
+		*(it + 1) = *it;
+		*it = temp;
+	}
+}
+
 void	PmergeMe::sort(vector<uint> *vc) {
 	bool						uneven = false;
 	unsigned int				last = 0;
@@ -148,26 +158,20 @@ void	PmergeMe::sort(vector<uint> *vc) {
 	
 	vector<std::vector<uint>::iterator>	vc_pairs;
 	vc_pairs.reserve(vc->size() / 2);
-	
-	auto	it = vc->begin();
-	unsigned int	i = 0;
-	while(i != this->n) {
+
+	unsigned int i = 0;
+	for (auto it = vc->begin(); it != vc->end(); it++) {
 		if (i % 2 == 0)
 			vc_pairs.push_back(it);
 		i++;
-		it++;
 	}
 
 	for (auto iter = vc_pairs.begin(); iter != vc_pairs.end(); iter++) {
-		cout << "value 1 : " << **iter << "\n";
-		cout << "value 2 : " <<*(*iter + 1) << "\n";
-		if (**iter > (*(*iter + 1))) {
-			unsigned int temp = *(*iter + 1);
-			*(*iter + 1) = **iter;
-			**iter = temp;
-		}
-		cout << "value 3 : " << **iter << "\n";
-		cout << "value 4 : " << *(*iter + 1) << "\n\n";
+		cout << "value 1 bc : " << **iter << "\n";
+		//cout << "value 2 bc : " <<*(*iter + 1) << "\n";
+		sort_pair(*iter);
+		cout << "value 1 ad : " << **iter << "\n";
+		//cout << "value 2 ad : " << *(*iter + 1) << "\n\n";
 	}
 	if (uneven == true) {
 		vc->push_back(last);
