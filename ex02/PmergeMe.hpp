@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:41 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/08 20:50:27 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/09 14:37:48 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,13 @@ class PmergeMe {
 		vector<uint>				sequence;
 		std::chrono::nanoseconds	vc_time;
 		std::chrono::nanoseconds	dc_time;
+
+		struct	pair {
+			int	large;
+			int	small;
+		};
 	
+		vector<PmergeMe::pair>	create_pairs(vector<uint> *vc);
 		bool	parse(int argc, char **argv);
 		void	run_vc();
 		void	run_dc();
