@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:41 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/09 14:37:48 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/10 13:29:22 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,17 @@ class PmergeMe {
 		std::chrono::nanoseconds	dc_time;
 
 		struct	pair {
-			int	large;
-			int	small;
+			unsigned int	large;
+			unsigned int	small;
 		};
 	
-		vector<PmergeMe::pair>	create_pairs(vector<uint> *vc);
-		bool	parse(int argc, char **argv);
-		void	run_vc();
-		void	run_dc();
-
+		bool					parse(int argc, char **argv);
+		void					run_vc();
+		void					run_dc();
+		vector<PmergeMe::pair>	create_pairs(vector<uint> &vc);
+		void					sort_pairs(vector<PmergeMe::pair> &pairs, size_t n);
+		void					insert_elem(vector<PmergeMe::pair> &pairs, PmergeMe::pair to_be_inserted, size_t n);
+		void					insert_elem(vector<uint> &vc, uint elem);
 
 	public :
 		PmergeMe();
@@ -60,7 +62,7 @@ class PmergeMe {
 		vector<uint>				get_sequence();
 
 		void	run(int argc, char **argv);
-		void	sort(vector<uint> *vc);
+		void	sort(vector<uint> &vc);
 		void	sort(deque<uint> *dc);
 
 		class PmergeMeException : public logic_error {
