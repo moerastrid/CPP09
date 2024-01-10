@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 13:51:38 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/04 13:12:19 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/10 20:05:45 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 	}
 	
 	//std::cout << inFile.rdbuf() << std::endl;
-	for (std::string line; std::getline(inFile, line); !line.empty()) {
+	for (std::string line; std::getline(inFile, line);) {
 		if (line == "date | value") {
 			continue ;
 		} else if (line == " ") {
