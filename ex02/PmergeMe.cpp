@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:38 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/10 13:42:23 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/10 18:25:24 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,32 @@ bool	PmergeMe::parse(int argc, char **argv) {
 	return (true);
 }
 
+void	PmergeMe::calculate_jacobssequence(void) {
+	vector<uint>	og_jaboc_sequence = {0, 1}; 
+	unsigned int	amount = (this->n / 2);
+	
+	while (*(og_jaboc_sequence.end() - 1) < amount) {
+		unsigned int	jacobsthal_number = (*(og_jaboc_sequence.end() - 1)) + 2 * (*(og_jaboc_sequence.end() - 2));
+		og_jaboc_sequence.push_back(jacobsthal_number);
+	}
+
+	jacobssequence.push_back(1);
+
+	for (auto it = og_jaboc_sequence.begin(); it != og_jaboc_sequence.end(); it++) {
+		uint current = jacobssequence[jacobssequence.size() - 1];
+		
+		if (*it < current)
+			continue ;
+		if (*it > current)
+		{
+			for (uint new_number = *it; new_number > *(it - 1); new_number--)
+				if (new_number < amount)
+					jacobssequence.push_back(new_number);
+		}
+	}
+}
+
+
 void	PmergeMe::run_vc() {
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -54,10 +80,10 @@ void	PmergeMe::run_vc() {
 		vc.push_back(sequence[i]);
 	}
 
-	// sorting part << "\x1B[34mRPN - " << str << "\x1B[0m\n";
-	cout << "\x1B[34mVC bc :" << vc << "\x1B[0m\n";
-	PmergeMe::sort(vc);
-	cout << "\x1B[34mVC ad :" << vc << "\x1B[0m\n";
+	// sorting part
+	if (n > 1)
+		PmergeMe::sort(vc);
+
 
 	// more data management
 	vc.clear();
@@ -72,11 +98,12 @@ void	PmergeMe::run_dc() {
 	// data management part
 	deque<uint>	dc;
 	for(unsigned int i = 0; i < n; i++) {
-		dc.push_back(sequence[n]);
+		dc.push_back(sequence[i]);
+		
 	}
 
-	// sorting part
-	PmergeMe::sort(&dc);
+	if (n > 1)
+		PmergeMe::sort(dc);
 
 	// more data management
 	dc.clear();
@@ -86,10 +113,145 @@ void	PmergeMe::run_dc() {
 }
 
 
-// PUBLIC ~ OCform
-PmergeMe::PmergeMe() {}
+// sort the elements inside the vector
+void	PmergeMe::sort(vector<uint> &vc) {
+	vector<PmergeMe::pair>	pairs;
+	bool					uneven = false;
+	unsigned int			last = 0;
 
-PmergeMe::~PmergeMe() {}
+	if (n % 2 != 0) {
+		uneven = true;
+		last = vc.at(n - 1);
+		vc.pop_back();
+	}
+	create_pairs(pairs, vc);
+	vc.clear();
+	for (auto it = pairs.begin(); it != pairs.end(); it++) {
+		vc.push_back((*it).large);
+	}
+	vc.insert(vc.begin(), (pairs[0]).small);
+
+	for (size_t i = 0; i < pairs.size() - 1; i++) {
+		size_t pos = jacobssequence[i];
+		insert_elem(vc, (pairs[pos]).small);
+	}
+	if (uneven == true) {
+		insert_elem(vc, last);
+	}
+}
+
+// sort the elements inside the deque
+void	PmergeMe::sort(deque<uint> &dc) {
+	deque<PmergeMe::pair>	pairs;
+	bool					uneven = false;
+	unsigned int			last = 0;
+
+	if (n % 2 != 0) {
+		uneven = true;
+		last = dc.at(n - 1);
+		dc.pop_back();
+	}
+	create_pairs(pairs, dc);
+	dc.clear();
+	for (auto it = pairs.begin(); it != pairs.end(); it++) {
+		dc.push_back((*it).large);
+	}
+	dc.push_front((pairs[0]).small);
+	
+	for (size_t i = 0; i < pairs.size() - 1; i++) {
+		size_t pos = jacobssequence[i];
+		insert_elem(dc, (pairs[pos]).small);
+	}
+	if (uneven == true) {
+		insert_elem(dc, last);
+	}
+}
+
+// create the PmergeMe pairs
+// inside the pair: put the right elem in either large or small
+// in the pair array : insert elem at the right place (recursive insertion sort)
+void	PmergeMe::create_pairs(vector<PmergeMe::pair> &pairs, vector<uint> &vc) {
+	pairs.reserve(vc.size() / 2);
+	
+	unsigned int i = 0;
+	for (auto it = vc.begin(); it != vc.end(); it++) {
+		if (i % 2 == 0) {
+			pair new_pair;
+			new_pair.small = (*it < *(it + 1) ? *it : *(it + 1));
+			new_pair.large = (*it > *(it + 1) ? *it : *(it + 1));
+			insert_elem(pairs, new_pair);
+		}
+		i++;
+	}
+}
+
+// create the PmergeMe pairs
+// inside the pair: put the right elem in either large or small
+// in the pair array : insert elem at the right place (recursive insertion sort)
+void	PmergeMe::create_pairs(deque<PmergeMe::pair> &pairs, deque<uint> &dc) {
+	unsigned int i = 0;
+	for (auto it = dc.begin(); it != dc.end(); it++) {
+		if (i % 2 == 0) {
+			pair new_pair;
+			new_pair.small = (*it < *(it + 1) ? *it : *(it + 1));
+			new_pair.large = (*it > *(it + 1) ? *it : *(it + 1));
+			insert_elem(pairs, new_pair);
+		}
+		i++;
+	}
+}
+
+// insert element at the right place
+void	PmergeMe::insert_elem(vector<uint> &vc, uint elem) {
+	for (auto it = vc.begin(); it != vc.end(); it++) {
+		if (elem <= *it) {
+			vc.insert(it, elem);
+			return;
+		}
+	}
+	vc.push_back(elem);
+}
+
+// insert element at the right place
+void	PmergeMe::insert_elem(deque<uint> &dc, uint elem) {
+	for (auto it = dc.begin(); it != dc.end(); it++) {
+		if (elem <= *it) {
+			dc.insert(it, elem);
+			return;
+		}
+	}
+	dc.push_back(elem);
+}
+
+// insert element at the right place
+void	PmergeMe::insert_elem(vector<PmergeMe::pair> &pairs, PmergeMe::pair elem) {
+	for (auto it = pairs.begin(); it != pairs.end(); it++) {
+		if (elem.large <= (*it).large) {
+			pairs.insert(it, elem);
+			return;
+		}
+	}
+	pairs.push_back(elem);
+}
+
+// insert element at the right place
+void	PmergeMe::insert_elem(deque<PmergeMe::pair> &pairs, PmergeMe::pair elem) {
+	for (auto it = pairs.begin(); it != pairs.end(); it++) {
+		if (elem.large <= (*it).large) {
+			pairs.insert(it, elem);
+			return;
+		}
+	}
+	pairs.push_back(elem);
+}
+
+
+// PUBLIC ~ OCform
+PmergeMe::PmergeMe() {
+}
+
+PmergeMe::~PmergeMe() {
+}
 
 PmergeMe::PmergeMe(const PmergeMe &src) {
 	*this = src;
@@ -98,6 +260,7 @@ PmergeMe::PmergeMe(const PmergeMe &src) {
 PmergeMe &PmergeMe::operator=(const PmergeMe &src) {
 	this->n = src.n;
 	this->sequence = src.sequence;
+	this->jacobssequence = src.jacobssequence;
 	this->vc_time = src.vc_time;
 	this->dc_time = src.dc_time;
 	return (*this);
@@ -131,112 +294,9 @@ vector<uint>	PmergeMe::get_sequence() {
 void	PmergeMe::run(int argc, char **argv) {
 	if (!parse(argc, argv))
 		throw(PmergeMeException("ERROR: PARSE : Please enter a positive int sequence to sort"));
+	calculate_jacobssequence();
 	run_vc();
 	run_dc();
-}
-
-// create the PmergeMe pairs and put the right elem in either large or small
-vector<PmergeMe::pair>	PmergeMe::create_pairs(vector<uint> &vc) {
-	vector<PmergeMe::pair>	pairs;
-	pairs.reserve(vc.size() / 2);
-	
-	unsigned int i = 0;
-	for (auto it = vc.begin(); it != vc.end(); it++) {
-		if (i % 2 == 0) {
-			pair new_pair;
-			new_pair.small = (*it < *(it + 1) ? *it : *(it + 1));
-			new_pair.large = (*it > *(it + 1) ? *it : *(it + 1));
-			cout << "pair " << i / 2 << "\tsmall: " << new_pair.small << "\tlarge: " << new_pair.large << "\n";
-			pairs.push_back(new_pair);
-		}
-		i++;
-	}
-	return (pairs);
-}
-
-// insert element at the right place
-void	PmergeMe::insert_elem(vector<PmergeMe::pair> &pairs, PmergeMe::pair to_be_inserted, size_t n) {
-	for (int i = n - 2; i >= 0; i--) {
-		if ((pairs[i]).large > to_be_inserted.large) {
-			pairs[i+1] = pairs[i];
-		} else {
-			pairs[i+1]  = to_be_inserted;
-			break;
-		}
-	}
-}
-
-// insert element at the right place
-void	PmergeMe::insert_elem(vector<uint> &vc, uint elem) {
-	for (auto it = vc.begin(); it != vc.end(); it++) {
-		if (elem <= *it) {
-			vc.insert(it, elem);
-			return;
-		}
-	}
-	vc.push_back(elem);
-}
-
-// recursive insertion sort pairs
-void	PmergeMe::sort_pairs(vector<PmergeMe::pair> &pairs, size_t n) {
-	if (n <= 1)
-		return ;
-	
-	sort_pairs(pairs, n - 1);
-	insert_elem(pairs, pairs[n - 1], n);
-}
-
-// sort the elements inside the vector
-void	PmergeMe::sort(vector<uint> &vc) {
-	bool						uneven = false;
-	unsigned int				last = 0;
-
-	cout << "incoming: " << vc << "\n";
-
-	if (n % 2 != 0) {
-		uneven = true;
-		last = vc.at(n - 1);
-		vc.pop_back();
-		cout << "modified: " << vc << "\n";
-	}
-	
-	if (uneven == true) {
-		cout << "BEWARE - uneven ! " << last << "\n";
-	}
-
-	vector<PmergeMe::pair>	pairs = create_pairs(vc);
-
-	cout << "pairs (bc):\n";
-	for (auto it = pairs.begin(); it != pairs.end(); it++) {
-		cout << "\tsmall: " << (*it).small << "\tlarge: " << (*it).large << "\n";
-	}
-	
-	sort_pairs(pairs, pairs.size());
-
-	// now make the large elems the main chain
-	vc.clear();
-	cout << "pairs (ad):\n";
-	for (auto it = pairs.begin(); it != pairs.end(); it++) {
-		vc.push_back((*it).large);
-		cout << "\tsmall: " << (*it).small << "\tlarge: " << (*it).large << "\n";
-	}
-	
-	// now put the small elements back inside from pairs to main chain
-	//insert_elem(vc, )
-	
-	
-	// then put the last one there too
-
-	if (uneven == true) {
-		insert_elem(vc, last);
-	}
-
-	cout << "modified: " << vc << "\n";
-}
-
-// sort the elements inside the deque
-void	PmergeMe::sort(deque<uint> *dc) {
-	std::sort(dc->begin(), dc->end());
 }
 
 

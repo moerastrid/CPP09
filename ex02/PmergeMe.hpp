@@ -6,7 +6,7 @@
 /*   By: ageels <ageels@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 18:02:41 by ageels        #+#    #+#                 */
-/*   Updated: 2024/01/10 13:29:22 by ageels        ########   odam.nl         */
+/*   Updated: 2024/01/10 18:14:46 by ageels        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,25 @@ class PmergeMe {
 		vector<uint>				sequence;
 		std::chrono::nanoseconds	vc_time;
 		std::chrono::nanoseconds	dc_time;
+		vector<uint>				jacobssequence;
 
 		struct	pair {
 			unsigned int	large;
 			unsigned int	small;
 		};
 	
-		bool					parse(int argc, char **argv);
-		void					run_vc();
-		void					run_dc();
-		vector<PmergeMe::pair>	create_pairs(vector<uint> &vc);
-		void					sort_pairs(vector<PmergeMe::pair> &pairs, size_t n);
-		void					insert_elem(vector<PmergeMe::pair> &pairs, PmergeMe::pair to_be_inserted, size_t n);
-		void					insert_elem(vector<uint> &vc, uint elem);
+		bool	parse(int argc, char **argv);
+		void	calculate_jacobssequence(void);
+		void	run_vc(void);
+		void	run_dc(void);
+		void	sort(vector<uint> &vc);
+		void	sort(deque<uint> &dc);
+		void	create_pairs(vector<PmergeMe::pair> &pairs, vector<uint> &vc);
+		void	create_pairs(deque<PmergeMe::pair> &pairs, deque<uint> &dc);
+		void	insert_elem(vector<uint> &vc, uint elem);
+		void	insert_elem(deque<uint> &dc, uint elem);
+		void	insert_elem(vector<PmergeMe::pair> &pairs, PmergeMe::pair elem);
+		void	insert_elem(deque<PmergeMe::pair> &pairs, PmergeMe::pair elem);
 
 	public :
 		PmergeMe();
@@ -62,8 +68,6 @@ class PmergeMe {
 		vector<uint>				get_sequence();
 
 		void	run(int argc, char **argv);
-		void	sort(vector<uint> &vc);
-		void	sort(deque<uint> *dc);
 
 		class PmergeMeException : public logic_error {
 			public :
